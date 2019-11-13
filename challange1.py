@@ -2,24 +2,39 @@
 BINARY GAP
 """
 
+import re
 
-# you can write to stdout for debugging purposes, e.g.
-# print("this is a debug message")
 
-def solution(N):
-    import re
+def solution(number):
 
-    num = bin(N)[2:]
-    print(str(num))
+    num = bin(number)[2:]
+    stop = False
+    longest_count = 0
 
-    r1 = re.match("10+1", num)
+    while not stop:
+        r1 = re.search("10+1", num)
 
-    if (r1 != None):
-        print(r1.span()[1])
+        if r1 is not None:
 
-    # print(r1)
-    # num = num[6:]
-    # r1 = re.match("10+1",num)
-    # print(r1)
+            match_length = len(r1.group())
+            binary_gap = match_length - 2
 
-solution(1041)
+            if binary_gap > longest_count:
+                longest_count = binary_gap
+
+            endpoint = r1.span()[1] - 1
+            num = num[endpoint:]
+
+        else:
+            stop = True
+
+    return longest_count
+
+
+def main():
+    number = 1041 # pass number to test
+    print(solution(number))
+
+
+if __name__ == "__main__":
+    main()
